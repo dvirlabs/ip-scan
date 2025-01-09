@@ -1,12 +1,14 @@
 from ping3 import ping
 from concurrent.futures import ThreadPoolExecutor
+import socket
+
 
 def is_ip_up(ip: str):
     """
     Check if a given IP is reachable using ICMP ping.
     """
     try:
-        response = ping(ip, timeout=1)  # Send a ping with a 1-second timeout
+        response = ping(ip, timeout=1) + socket.hostname()  # Send a ping with a 1-second timeout
         if response is not None:  # If the IP responds to ping
             return {"ip": ip, "status": "up"}
         else:

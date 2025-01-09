@@ -16,6 +16,9 @@ import {
   TextField,  // Import TextField to handle input
 } from '@mui/material';
 
+// Define base_url from the environment variable
+const baseUrl = process.env.REACT_APP_BASE_URL || 'http://localhost:8000';
+
 const AvailableAddress = () => {
   // State hooks for data, loading, and IP inputs
   const [data, setData] = useState([]);
@@ -28,7 +31,7 @@ const AvailableAddress = () => {
     setLoading(true);  // Set loading state to true while fetching
     try {
       // Pass the start_ip and end_ip to the API request as query parameters
-      const response = await axios.get('http://127.0.0.1:8000/scan', {
+      const response = await axios.get(`${baseUrl}/scan`, {
         params: { start_ip: startIp, end_ip: endIp },
       });
       setData(response.data.results);  // Update data state with response from API
@@ -40,57 +43,57 @@ const AvailableAddress = () => {
 
   return (
     <Box sx={{ p: 4 }}>
-      <Typography variant="h4" sx={{ mb: 2, color: 'white' }}>  {/* Set text color to white */}
+      <Typography variant="h4" sx={{ mb: 2, color: 'white' }}>
         Available Address Scanner
       </Typography>
       
       {/* Input fields for Start IP and End IP */}
       <Box sx={{ mb: 2 }}>
         <TextField
-          label="Start IP"  // Label for the start IP input
-          value={startIp}  // Value is controlled by the startIp state
-          onChange={(e) => setStartIp(e.target.value)}  // Update startIp state on change
+          label="Start IP"
+          value={startIp}
+          onChange={(e) => setStartIp(e.target.value)}
           sx={{
-            mr: 2,  // Add margin-right for spacing between the inputs
-            backgroundColor: 'transparent',  // Set background to transparent
+            mr: 2,
+            backgroundColor: 'transparent',
             '& .MuiInputBase-root': {
-              color: 'white',  // Set text color inside the input field to white
-              borderColor: 'white',  // Set border color to white
+              color: 'white',
+              borderColor: 'white',
             },
             '& .MuiInputLabel-root': {
-              color: 'white',  // Set label text color to white
+              color: 'white',
             },
             '& .MuiOutlinedInput-root': {
-              borderColor: 'white',  // Set border color of input field to white
+              borderColor: 'white',
               '&:hover .MuiOutlinedInput-notchedOutline': {
-                borderColor: 'white',  // Change border color on hover
+                borderColor: 'white',
               },
               '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                borderColor: 'white',  // Change border color when focused
+                borderColor: 'white',
               },
             },
           }}
         />
         <TextField
-          label="End IP"  // Label for the end IP input
-          value={endIp}  // Value is controlled by the endIp state
-          onChange={(e) => setEndIp(e.target.value)}  // Update endIp state on change
+          label="End IP"
+          value={endIp}
+          onChange={(e) => setEndIp(e.target.value)}
           sx={{
-            backgroundColor: 'transparent',  // Set background to transparent
+            backgroundColor: 'transparent',
             '& .MuiInputBase-root': {
-              color: 'white',  // Set text color inside the input field to white
-              borderColor: 'white',  // Set border color to white
+              color: 'white',
+              borderColor: 'white',
             },
             '& .MuiInputLabel-root': {
-              color: 'white',  // Set label text color to white
+              color: 'white',
             },
             '& .MuiOutlinedInput-root': {
-              borderColor: 'white',  // Set border color of input field to white
+              borderColor: 'white',
               '&:hover .MuiOutlinedInput-notchedOutline': {
-                borderColor: 'white',  // Change border color on hover
+                borderColor: 'white',
               },
               '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                borderColor: 'white',  // Change border color when focused
+                borderColor: 'white',
               },
             },
           }}
@@ -99,7 +102,7 @@ const AvailableAddress = () => {
 
       {/* Button to trigger scanning */}
       <Button variant="contained" color="primary" onClick={fetchData} disabled={loading}>
-        {loading ? 'Scanning...' : 'Scan IP Range'}  {/* Show loading text while fetching */}
+        {loading ? 'Scanning...' : 'Scan IP Range'}
       </Button>
 
       {/* Show CircularProgress while loading */}
