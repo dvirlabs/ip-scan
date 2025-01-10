@@ -19,6 +19,7 @@ services:
     networks:
       - app-network  # Both services should be on the same network
 
+
 networks:
   app-network:
     driver: bridge  # Use bridge network for communication between containers
