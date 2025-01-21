@@ -1,21 +1,29 @@
 from ping3 import ping
 from concurrent.futures import ThreadPoolExecutor
 import socket
+import requests
 
 
 def is_ip_up(ip: str):
     """
-    Check if a given IP is reachable using ICMP ping.
+    Check if a given IP is reachable. If the response contains 'Request timed out', 
+    or any other issue arises, the IP is considered 'down' (unavailable).
     """
     try:
-        response = ping(ip, timeout=1) + socket.hostname()  # Send a ping with a 1-second timeout
-        if response is not None:  # If the IP responds to ping
-            return {"ip": ip, "status": "up"}
-        else:
-            return {"ip": ip, "status": "down"}
-    except Exception as e:
-        # Handle any errors (e.g., permission issues)
+        # Perform a request to the IP
+        response = requests.get(f'http://{ip}', timeout=5)
+        
+        # If the request is successful, consider the IP "up" (in use)
+        return {"ip": ip, "status": "up"}  # IP is in use if it responds
+        
+    except requests.exceptions.Timeout:
+        # If a timeout exception occurs, consider the IP "down" (available)
+        return {"ip": ip, "status": "down"}  # IP is available if timed out
+    except requests.exceptions.RequestException:
+        # Handle other request exceptions (e.g., connection errors), IP is "down" (available)
         return {"ip": ip, "status": "down"}
+
+
 
 def scan_range(start_ip: str, end_ip: str):
     """
